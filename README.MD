@@ -1,6 +1,6 @@
-Before running server withoit docker you have to install conda packeges from environment.yml.
+This simple application receives message and push it in redis queue (actually list). When message pushed a worker get it from the redis and write to a database. You can get last N messages from the db using /last method of the api.
 
-You can check running service using command:
-curl -X GET "http://localhost:5000/"
+Command to run the application:
+**docker-compose up**
 
 ![](record.gif)

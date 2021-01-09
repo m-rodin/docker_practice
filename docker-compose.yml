@@ -1,0 +1,48 @@
+version: "3.9"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./webserver/Dockerfile    
+    depends_on:
+      - db
+      - redis      
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/webserver
+    networks:
+      - front-tier
+      - back-tier
+      
+  worker:
+    build:
+      context: .
+      dockerfile: ./worker/Dockerfile
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/worker
+    networks:
+      - back-tier
+      
+  redis:
+    image: redis
+    container_name: redis
+    networks:
+      - back-tier
+    
+  db:
+    build: ./database
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    networks:
+      - back-tier
+
+volumes:
+  db-data: {}
+
+networks:
+  front-tier:
+  back-tier:
